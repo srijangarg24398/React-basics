@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>React</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+	<div id="content"></div>
+	<div id="states"></div>
+	<!-- <script type="text/jsx">
+		var SrijanComponent = React.createClass({
+			doSomething: function(){
+				alert("Hello"+"hi");
+			},
+			render: function(){
+				return (
+					<div>
+						<h2>Hello {this.props.person}</h2>
+						<p><a onClick={this.doSomething} href="#">{this.props.children}</a></p>
+					</div>
+				)
+			}
+		});
+		React.render(<div>
+				<SrijanComponent person="Srijan" >Is awesome</SrijanComponent>
+				<SrijanComponent person="Kalia" >is fake</SrijanComponent>
+				<SrijanComponent person="Pappu" >is Rahul Gandhi</SrijanComponent>
+				<SrijanComponent person="Kaali" >In mata ki jai</SrijanComponent>
+			</div>,
+			document.getElementById('content'));
+	</script> -->
+
+<!-- 	<script type="text/jsx">
+		var SrijanComponent=React.createClass({
+			render : function(){
+				return (
+					<div>
+						<h1>Hello</h1>
+						<p>Hello I am Srijan</p>
+					</div>
+				);
+			}
+		})
+		React.render(
+			<div>
+				<SrijanComponent />
+				<SrijanComponent />
+				<SrijanComponent />
+			</div>,document.getElementById("content"));
+	</script> -->
+
+	<script type="text/jsx">
+		var Movies=React.createClass({
+			getInitialState:function(){
+				return {editing:false}
+			},
+			edit:function(){
+				this.setState({editing:true})
+			},
+			save:function(){
+				var val=this.refs.newText.value;
+				console.log(val);
+				this.props.updateFromBoard(val,this.props.index)
+				this.setState({editing:false})
+			},
+			remove:function(){
+				alert("Remove");
+				this.props.deleteFromBoard(this.props.index)
+			},
+			renderNormal:function(){
+				return (
+					<div className="Movie-Block">
+						<div className="title">{this.props.children}</div>
+						<div className="Buttons">
+							<button className="Edit" onClick={this.edit}>Edit</button>
+							<button className="Remove" onClick={this.remove}>Remove</button>
+						</div>
+					</div>
+				)
+			},
+			renderForm:function(){
+				return (
+					<div className="Movie-Block">
+						<div className="title"><input ref="newText" type="text" defaultValue={this.props.children}/></div>
+						<div className="Buttons">
+							<button className="Edit" onClick={this.save}>Save</button>
+						</div>
+					</div>
+				)
+			},
+			render:function(){
+				if (this.state.editing){
+					return this.renderForm();
+				}else{
+					return this.renderNormal();
+				}
+			}
+		});
+
+		var Board=React.createClass({
+			getInitialState:function(){
+				return {
+					comments:[
+						"Comment one",
+						"Comment two",
+						"Comment three"
+					]
+				}
+			},
+			removeMovie:function(i){
+				console.log("Removing movie "+i)
+				var arr=this.state.comments;
+				arr.splice(i,1);
+				this.setState ({comments:arr})
+			},
+			updateMovie:function(newMovie,i){
+				console.log("Updating movie "+i)
+				var arr=this.state.comments;
+				arr[i]=newMovie
+				this.setState ({comments:arr})
+			},
+			addMovie:function(newMovie){
+				var arr=this.state.comments;
+				arr.push(newMovie)
+				this.setState ({comments:arr})
+			},
+			eachMovie:function(text,i){
+				return (<Movies key={i} index={i} deleteFromBoard={this.removeMovie} updateFromBoard={this.updateMovie}>{text}</Movies>)
+			},
+			render:function(){
+				return (
+					<div>
+						<button onClick={this.addMovie.bind(null,"Kal Ho Na Ho")} >Add New</button>
+						<div className="board">
+							{
+								this.state.comments.map(this.eachMovie)
+							}
+						</div>
+					</div>
+				)
+			}
+		})
+		/*React.render(
+			<div>
+				<Movies>Captian America</Movies>
+				<Movies>Iron Man</Movies>
+				<Movies>Thor</Movies>
+			</div>,document.getElementById("content")
+		);*/
+		React.render(<Board />,document.getElementById("content"));
+	</script>
+<!-- <script type="text/jsx">
+	var CheckBox=React.createClass({
+		getInitialState:function(){
+			return {checked: true}
+		},
+		handleState:function(){
+			this.setState({checked:!this.state.checked})
+		},
+		render : function(){
+			var msg;
+			if (this.state.checked){
+				msg="checked"
+			}else{
+				msg="unchecked"
+			}
+
+			return (
+				<div>
+					<input type="CheckBox" defaultChecked={this.state.checked} onChange={this.handleState}/>
+					<h3>Checkbox is {msg}</h3>
+				</div>
+			)
+		}
+	})
+React.render(<CheckBox ></CheckBox>,document.getElementById("states"));
+</script> -->
+</body>
+<style type="text/css">
+	div.Movie-Block{
+		display: flex;
+		flex-direction: column;
+	}
+	div.Buttons{
+		display: flex;
+		justify-content: center;
+	}
+	div.title{
+		color: black;
+		font-size: 30px;
+		font-weight: bold;
+		display: flex;
+		justify-content: space-around;
+	}
+	button.Edit{
+		background-color: lightblue;
+	}
+	button.Remove{
+		background-color: red;
+	}
+</style>
+</html>
